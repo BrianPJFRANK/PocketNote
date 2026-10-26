@@ -303,7 +303,7 @@ button:disabled { opacity: 0.45; cursor: default; }
 .row-btn.static { cursor: default; }
 .budget-line { align-items: flex-start; }
 .budget-line span { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.budget-line.over, .budget-card.over { background: #fff5f5; }
+.budget-line.over { background: #fff5f5; }
 .banner { margin: 0; font-weight: 800; }
 
 .btn {
@@ -512,7 +512,9 @@ button:disabled { opacity: 0.45; cursor: default; }
 .mascot.sm .mascot-face { font-size: 26px; }
 .mascot-prop { position: absolute; right: -2px; bottom: -2px; font-size: 20px; }
 .empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 28px 12px 12px; color: var(--muted); }
-.empty.compact .mascot { width: 72px; height: 72px; }
+.empty-art { width: min(200px, 56vw); height: auto; display: block; }
+.empty.compact .empty-art { width: 112px; }
+.gate-art { width: min(240px, 68vw); height: auto; display: block; }
 .gate { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 24px; text-align: center; }
 .gate h1 { margin: 0; font-size: 32px; }
 .gate .stack { width: min(100%, 280px); }
@@ -641,8 +643,137 @@ button:disabled { opacity: 0.45; cursor: default; }
   pointer-events: none;
 }
 .hero strong { font-size: 32px; }
-.budget-card { position: relative; text-align: left; padding: 16px; }
-.budget-card .mascot { position: absolute; right: 12px; top: 12px; }
+.budget-hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #3B2A54;
+  color: white;
+  border-radius: 20px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.budget-hero-art { width: 112px; height: 112px; flex: none; object-fit: contain; }
+.budget-hero-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.budget-hero-title { font-size: 20px; font-weight: 800; line-height: 1.25; }
+.budget-hero-hint { margin: 0; font-size: 13px; line-height: 1.45; color: rgba(255, 255, 255, 0.72); }
+.budget-hero-btn {
+  align-self: stretch;
+  border: 0;
+  background: white;
+  color: #3B2A54;
+  font-weight: 800;
+  border-radius: 12px;
+  min-height: 40px;
+  padding: 0 14px;
+}
+.budget-hero-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+.budget-hero-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #22d3ee, #6366f1 46%, #c084fc);
+  position: relative;
+}
+.budget-hero-bar > span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 46%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent);
+}
+.budget-splits { padding-bottom: 4px; }
+.budget-splits-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 22px 16px 8px; }
+.budget-splits-empty img { width: min(168px, 46vw); height: auto; display: block; }
+.budget-splits-empty strong { font-size: 17px; }
+.budget-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100% - 28px);
+  margin: 8px 14px 14px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: #3B2A54;
+  color: white;
+}
+.budget-split {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 1px 40px;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 8px 12px 14px;
+}
+.budget-split-mid { height: 44px; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.budget-split-mid > strong { font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.budget-split-track { display: flex; align-items: center; gap: 6px; height: 18px; min-width: 0; }
+.budget-split-bar {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  border-radius: 99px;
+  background: #f3e8ff;
+  overflow: hidden;
+}
+.budget-split-bar > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ddd6fe, #8b5cf6 55%, #6d28d9);
+}
+.budget-split-bar > em {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  color: #3B2A54;
+  white-space: nowrap;
+}
+.budget-split-track > b { flex: none; min-width: 36px; text-align: right; font-size: 12px; color: var(--muted); }
+.budget-split-rule { width: 1px; height: 28px; background: color-mix(in srgb, var(--muted) 35%, white); }
+.dialog.budget-form { width: min(100%, 360px); max-height: min(84vh, 720px); display: flex; flex-direction: column; overflow: hidden; }
+.dialog.budget-form .budget-form-body { overflow: auto; min-height: 0; }
+.dialog.with-trash h2 { margin-left: 28px; }
+.budget-trash { position: absolute; top: 8px; left: 8px; color: #9f1239; }
+.budget-form-body { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.budget-form-body .field,
+.budget-form-body .btn,
+.budget-form-body .cal,
+.budget-form-body .budget-dates,
+.budget-form-body .budget-cats,
+.budget-form-body .budget-warn { width: 100%; }
+.budget-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+.budget-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.budget-dates button {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 12px;
+  min-height: 52px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.budget-dates button.on { border-color: #3B2A54; background: #f6efff; }
+.budget-dates small { color: var(--muted); font-size: 12px; font-weight: 650; }
+.budget-dates b { font-size: 14px; }
+.budget-cats { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow: auto; }
+.budget-warn { margin: 0; color: #8E3A45; font-size: 13px; line-height: 1.4; }
+.budget-split-name { display: flex; align-items: center; gap: 8px; font-weight: 800; }
 .home-budget {
   width: 100%;
   display: flex;

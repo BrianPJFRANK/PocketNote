@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { OverlayContext } from '../overlay.ts'
-import type { MascotPose } from './Mascot.tsx'
-import { Mascot } from './Mascot.tsx'
 import { Icon } from './Icon.tsx'
+import cannotFind from '../assets/general_components/cannotFind.png'
 
 const SheetSlideContext = createContext<(() => void) | null>(null)
 
@@ -143,6 +142,7 @@ export function Dialog({
   children,
   onClose,
   closeLabel,
+  className,
 }: {
   open: boolean
   title: string
@@ -150,13 +150,14 @@ export function Dialog({
   children?: ReactNode
   onClose?: () => void
   closeLabel: string
+  className?: string
 }) {
   const root = useContext(OverlayContext)
   if (!open || !root) return null
   return createPortal(
     <div className="dialog-layer" role="dialog" aria-modal="true">
       <button type="button" className="sheet-backdrop" aria-label={closeLabel} onClick={onClose} />
-      <div className="dialog">
+      <div className={className ? `dialog ${className}` : 'dialog'}>
         {onClose ? (
           <button type="button" className="icon-btn dialog-x" onClick={onClose} aria-label={closeLabel}>
             <Icon name="close" />
@@ -171,10 +172,10 @@ export function Dialog({
   )
 }
 
-export function EmptyState({ pose, text, compact = false }: { pose: MascotPose; text: string; compact?: boolean }) {
+export function EmptyState({ text, compact = false }: { text: string; compact?: boolean }) {
   return (
     <div className={compact ? 'empty compact' : 'empty'}>
-      <Mascot pose={pose} size={compact ? 'sm' : 'lg'} />
+      <img className="empty-art" src={cannotFind} alt="" />
       <p>{text}</p>
     </div>
   )

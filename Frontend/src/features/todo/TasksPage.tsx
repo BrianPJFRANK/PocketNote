@@ -145,7 +145,7 @@ export function TasksPage() {
                   picked={picked.includes(task.id)}
                   onPick={picking ? () => setPicked(toggleId(picked, task.id)) : undefined}
                 />
-              )) : <EmptyState pose="todo-empty" text={t('todo.empty')} compact={tasks.length > 0} />}
+              )) : <EmptyState text={t('todo.empty')} compact={tasks.length > 0} />}
             </div>
           </SortableContext>
         </DndContext>

@@ -85,10 +85,9 @@ function navFor(pathname: string, t: (key: string) => string): { to: string; lab
       { to: '/todo/stats', label: t('nav.stats'), icon: 'chart' },
     ]
   }
-  if (pathname === '/ledger' || pathname === '/ledger/budget' || pathname === '/ledger/reports' || pathname === '/ledger/accounts') {
+  if (pathname === '/ledger' || pathname === '/ledger/reports' || pathname === '/ledger/accounts') {
     return [
       { to: '/ledger', label: t('nav.home'), icon: 'home', end: true },
-      { to: '/ledger/budget', label: t('nav.budget'), icon: 'pie' },
       { to: '/ledger/reports', label: t('nav.reports'), icon: 'chart' },
       { to: '/ledger/accounts', label: t('nav.accounts'), icon: 'wallet' },
     ]

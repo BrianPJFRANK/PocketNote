@@ -69,7 +69,7 @@ export function MemoListPage() {
           </PopMenu>
         </div>
       </div>
-      {empty || noMatch ? <EmptyState pose="memo-empty" text={noMatch ? t('memo.noMatch') : t('memo.empty')} compact={noMatch} /> : (
+      {empty || noMatch ? <EmptyState text={noMatch ? t('memo.noMatch') : t('memo.empty')} compact={noMatch} /> : (
         <>
           {pinned.length ? <MemoGroup title={t('memo.pinned')} memos={pinned} locale={i18n.language} picking={picking} picked={picked} onPick={(id) => setPicked(toggle(picked, id))} /> : null}
           {groups.map((group) => (

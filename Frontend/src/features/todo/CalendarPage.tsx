@@ -83,7 +83,7 @@ export function CalendarPage() {
               if (result === 'record') setRecordId(task.id)
             }}
           />
-        )) : <EmptyState pose="todo-empty" text={t('todo.empty')} />}
+        )) : <EmptyState text={t('todo.empty')} />}
         {selected === today && todayAllDone(tasks, today) ? (
           <div className="celebrate"><Mascot pose="celebrate" size="md" /></div>
         ) : null}

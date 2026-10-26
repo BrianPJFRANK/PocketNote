@@ -4,26 +4,15 @@ import { MenuButton } from '../../components/Icon.tsx'
 import { EmptyState } from '../../components/Overlay.tsx'
 import incomeArt from '../../assets/categories/txn_categories/txn_income.png'
 import expenseArt from '../../assets/categories/txn_categories/txn_expense.png'
+import { budgetRange } from '../../lib/date.ts'
 import { totalsBetween } from '../../lib/finance.ts'
 import { formatCardHKD, roundMoney } from '../../lib/money.ts'
 import { inPeriod, periodBounds } from '../../lib/period.ts'
 import { useFab } from '../../lib/useFab.ts'
 import { useStore } from '../../store/useStore.ts'
 import { useUi } from '../../store/ui.ts'
+import { budgetPose, budgetSrc } from './budgetArt.ts'
 import { PeriodControls, TxnRow, openTxn, openTxnEdit } from './shared.tsx'
-
-const budgetImages = import.meta.glob('../../assets/budgets/*.png', { eager: true, import: 'default' }) as Record<string, string>
-
-function budgetSrc(name: string): string | undefined {
-  return Object.entries(budgetImages).find(([path]) => path.replaceAll('\\', '/').endsWith(`/${name}.png`))?.[1]
-}
-
-function budgetPose(ratio: number): string {
-  if (ratio >= 1) return 'budget_outofbudget'
-  if (ratio >= 0.75) return 'budget_reachlimit'
-  if (ratio >= 0.4) return 'budget_medium'
-  return 'budget_low'
-}
 
 function budgetFigure(amount: number): string {
   const rounded = roundMoney(amount)
@@ -41,14 +30,18 @@ export function LedgerHome() {
   const transactions = useStore((state) => state.transactions)
   const period = useStore((state) => state.period)
   const budgetTotal = useStore((state) => state.budgetTotal)
+  const budgetStart = useStore((state) => state.budgetStart)
+  const budgetEnd = useStore((state) => state.budgetEnd)
   useFab(true, () => openTxn(navigate, location))
   const bounds = periodBounds(period)
   const totals = totalsBetween(transactions, bounds.start, bounds.end)
+  const budgetWindow = budgetRange(budgetStart, budgetEnd)
+  const budgetSpent = budgetTotal == null ? 0 : totalsBetween(transactions, budgetWindow.start, budgetWindow.end).expense
   const latest = transactions
     .filter((item) => inPeriod(item.date, period))
     .sort((a, b) => b.date.localeCompare(a.date) || b.createdAt.localeCompare(a.createdAt))
     .slice(0, 5)
-  const ratio = budgetTotal != null && budgetTotal > 0 ? totals.expense / budgetTotal : 0
+  const ratio = budgetTotal != null && budgetTotal > 0 ? budgetSpent / budgetTotal : 0
   const pose = budgetPose(budgetTotal == null ? 0 : ratio)
   const face = budgetSrc(pose)
 
@@ -72,8 +65,8 @@ export function LedgerHome() {
             <span className="budget-figures">{t('ledger.notBudget')}</span>
           ) : (
             <span className="budget-lines">
-              <span className="budget-figures">{t('ledger.usage', { spent: budgetFigure(totals.expense), total: budgetFigure(budgetTotal) })}</span>
-              <span className="budget-figures">{t('ledger.remain', { left: budgetFigure(Math.max(0, budgetTotal - totals.expense)) })}</span>
+              <span className="budget-figures">{t('ledger.usage', { spent: budgetFigure(budgetSpent), total: budgetFigure(budgetTotal) })}</span>
+              <span className="budget-figures">{t('ledger.remain', { left: budgetFigure(Math.max(0, budgetTotal - budgetSpent)) })}</span>
             </span>
           )}
         </span>
@@ -93,7 +86,7 @@ export function LedgerHome() {
         <button type="button" onClick={() => navigate('/ledger/activity')}>{t('ledger.seeAll')}</button>
       </div>
       <article className="card latest-list">
-        {latest.length ? latest.map((item) => <TxnRow key={item.id} tx={item} largeIcon onClick={() => openTxnEdit(navigate, item.id, location)} />) : <EmptyState pose="ledger-empty" text={t('ledger.empty')} />}
+        {latest.length ? latest.map((item) => <TxnRow key={item.id} tx={item} largeIcon onClick={() => openTxnEdit(navigate, item.id, location)} />) : <EmptyState text={t('ledger.empty')} />}
       </article>
     </div>
   )

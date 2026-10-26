@@ -101,7 +101,7 @@ export function ReportsPage() {
               })}
               {slices.length > 5 ? <button type="button" className="text-btn" onClick={() => setShowAll((value) => !value)}>{showAll ? t('ledger.collapse') : t('ledger.showAll')}</button> : null}
             </>
-          ) : <EmptyState pose="ledger-empty" text={t('ledger.noChart')} compact />}
+          ) : <EmptyState text={t('ledger.noChart')} compact />}
           {!sum ? <p className="muted">{formatHKD(0)}</p> : null}
         </article>
       )}

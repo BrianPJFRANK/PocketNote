@@ -107,6 +107,8 @@ function takeSnapshot(state: Data): Snapshot {
     transactions: state.transactions,
     fixedExpenses: state.fixedExpenses,
     budgetTotal: state.budgetTotal,
+    budgetStart: state.budgetStart,
+    budgetEnd: state.budgetEnd,
     budgetByCategory: state.budgetByCategory,
     tasks: state.tasks,
     memos: state.memos,
@@ -121,6 +123,8 @@ interface Data {
   transactions: Transaction[]
   fixedExpenses: FixedExpense[]
   budgetTotal: number | null
+  budgetStart: string | null
+  budgetEnd: string | null
   budgetByCategory: Record<string, number>
   tasks: Task[]
   memos: Memo[]
@@ -150,7 +154,8 @@ interface Actions {
   updateTransaction: (id: string, patch: Partial<Omit<Transaction, 'id'>>) => void
   deleteTransaction: (id: string) => void
   refundTransaction: (id: string) => void
-  setBudgetTotal: (amount: number | null) => void
+  setBudget: (amount: number, start: string, end: string) => void
+  clearBudget: () => void
   setCategoryBudget: (categoryId: string, amount: number | null) => void
   saveFixed: (draft: Omit<FixedExpense, 'id'> & { id?: string }) => void
   deleteFixed: (id: string) => void
@@ -192,6 +197,8 @@ export const useStore = create<Data & Actions>()(
       transactions: [],
       fixedExpenses: [],
       budgetTotal: null,
+      budgetStart: null,
+      budgetEnd: null,
       budgetByCategory: {},
       tasks: [],
       memos: [],
@@ -308,7 +315,11 @@ export const useStore = create<Data & Actions>()(
         })
       },
 
-      setBudgetTotal: (budgetTotal) => set({ budgetTotal }),
+      setBudget: (amount, start, end) => {
+        const range = start <= end ? { budgetStart: start, budgetEnd: end } : { budgetStart: end, budgetEnd: start }
+        set({ budgetTotal: amount, ...range })
+      },
+      clearBudget: () => set({ budgetTotal: null, budgetStart: null, budgetEnd: null, budgetByCategory: {} }),
       setCategoryBudget: (categoryId, amount) => {
         const budgetByCategory = { ...get().budgetByCategory }
         if (amount == null) delete budgetByCategory[categoryId]
@@ -515,6 +526,8 @@ export const useStore = create<Data & Actions>()(
           transactions: snap.transactions,
           fixedExpenses: snap.fixedExpenses,
           budgetTotal: snap.budgetTotal,
+          budgetStart: snap.budgetStart ?? null,
+          budgetEnd: snap.budgetEnd ?? null,
           budgetByCategory: snap.budgetByCategory,
           tasks: snap.tasks,
           memos: snap.memos,
@@ -533,6 +546,8 @@ export const useStore = create<Data & Actions>()(
         transactions: state.transactions,
         fixedExpenses: state.fixedExpenses,
         budgetTotal: state.budgetTotal,
+        budgetStart: state.budgetStart,
+        budgetEnd: state.budgetEnd,
         budgetByCategory: state.budgetByCategory,
         tasks: state.tasks,
         memos: state.memos,

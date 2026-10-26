@@ -98,6 +98,17 @@ export function sameDayNextMonth(due: string, day: number): string {
   return isoDate(next)
 }
 
+export function currentMonthBounds(now = new Date()): { start: string; end: string } {
+  const start = new Date(now.getFullYear(), now.getMonth(), 1)
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0)
+  return { start: isoDate(start), end: isoDate(end) }
+}
+
+export function budgetRange(start: string | null, end: string | null, now = new Date()): { start: string; end: string } {
+  if (start && end) return start <= end ? { start, end } : { start: end, end: start }
+  return currentMonthBounds(now)
+}
+
 export function eachDate(start: string, end: string): string[] {
   const days: string[] = []
   let cursor = parseISODate(start)

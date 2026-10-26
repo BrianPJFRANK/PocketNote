@@ -35,7 +35,7 @@ export function TrashPage() {
             <button type="button" className="text-btn" onClick={() => setPending(memo.id)}>{t('common.clear')}</button>
           </div>
         )
-      }) : <EmptyState pose="trash-empty" text={t('memo.trashEmpty')} />}
+      }) : <EmptyState text={t('memo.trashEmpty')} />}
       <Dialog open={!!pending} title={t('common.clear')} body={t('memo.purgeAsk')} onClose={() => setPending(null)} closeLabel={t('common.cancel')}>
         <div className="quick-row">
           <button type="button" className="btn ghost" onClick={() => setPending(null)}>{t('common.cancel')}</button>

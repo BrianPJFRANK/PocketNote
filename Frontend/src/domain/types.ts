@@ -121,6 +121,8 @@ export interface Snapshot {
   transactions: Transaction[]
   fixedExpenses: FixedExpense[]
   budgetTotal: number | null
+  budgetStart: string | null
+  budgetEnd: string | null
   budgetByCategory: Record<string, number>
   tasks: Task[]
   memos: Memo[]

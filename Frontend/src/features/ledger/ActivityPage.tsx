@@ -79,7 +79,7 @@ export function ActivityPage() {
       </div>
       <p className="count-line">{t('ledger.countLine', { count: visible.length, amount: formatHKD(totals.balance) })}</p>
       <div className="list">
-        {visible.length ? visible.map((item) => <TxnRow key={item.id} tx={item} onClick={() => openTxnEdit(navigate, item.id, location)} />) : <EmptyState pose="ledger-empty" text={t('ledger.empty')} compact={transactions.length > 0} />}
+        {visible.length ? visible.map((item) => <TxnRow key={item.id} tx={item} onClick={() => openTxnEdit(navigate, item.id, location)} />) : <EmptyState text={t('ledger.empty')} compact={transactions.length > 0} />}
       </div>
       <FilterSheet open={open} value={{ ...filter, query }} onClose={() => setOpen(false)} onApply={(next) => setFilter({ ...next, query: '' })} />
     </div>

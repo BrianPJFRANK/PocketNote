@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { OverlayContext } from './overlay.ts'
 import { Shell } from './components/Shell.tsx'
 import { Mascot } from './components/Mascot.tsx'
+import loadingArt from './assets/general_components/loading.jpeg'
 import { SessionContext } from './session.ts'
 import i18n from './i18n/index.ts'
 import { useStore } from './store/useStore.ts'
@@ -125,7 +126,7 @@ function Splash() {
   const { t } = useTranslation()
   return (
     <div className="gate">
-      <Mascot pose="greet" size="xl" />
+      <img className="gate-art" src={loadingArt} alt="" />
       <h1>Pocket Note</h1>
       <p>{t('splash.loading')}</p>
     </div>
