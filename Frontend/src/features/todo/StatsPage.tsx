@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Heat, Pie, pieColor } from '../../components/Charts.tsx'
+import { Heat, Pie } from '../../components/Charts.tsx'
+import { categoryColor } from '../../domain/categoryColor.ts'
 import { MenuButton } from '../../components/Icon.tsx'
 import { Mascot } from '../../components/Mascot.tsx'
 import { addDays, eachDate, isoDate, startOfWeek, todayISO } from '../../lib/date.ts'
@@ -61,13 +62,13 @@ export function StatsPage() {
         <h3>{t('todo.pie')}</h3>
         {total ? (
           <div className="chart-row">
-            <Pie slices={slices.map((item, index) => ({ amount: item[1], color: pieColor(index) }))} />
+            <Pie slices={slices.map((item) => ({ amount: item[1], color: categoryColor(item[0]) ?? '#8E8AA3' }))} />
             <ul className="legend">
-              {slices.slice(0, 5).map((item, index) => {
+              {slices.slice(0, 5).map((item) => {
                 const category = categories.find((entry) => entry.id === item[0])
                 return (
                   <li key={item[0]}>
-                    <i style={{ background: pieColor(index) }} />
+                    <i style={{ background: categoryColor(item[0]) }} />
                     {category ? displayName(category, t) : item[0]}
                     <b>{Math.round((item[1] / total) * 100)}%</b>
                   </li>

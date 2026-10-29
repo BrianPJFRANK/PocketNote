@@ -1,3 +1,5 @@
+import { categoryTint } from '../domain/categoryColor.ts'
+
 const images = import.meta.glob('../assets/categories/{exp_categories,inc_categories,assets_categories}/*.{png,webp,svg,jpg,jpeg}', {
   eager: true,
   import: 'default',
@@ -36,8 +38,9 @@ function artwork(id: string): string | undefined {
 
 export function CategoryIcon({ id, emoji, size = 28, fit = false }: { id: string; emoji: string; size?: number; fit?: boolean }) {
   const src = artwork(id)
+  const color = categoryTint(id)
   return (
-    <span className="cat-ico" style={fit ? undefined : { width: size, height: size }}>
+    <span className={color ? 'cat-ico cat-swatch' : 'cat-ico'} style={{ ...(fit ? {} : { width: size, height: size }), ...(color ? { background: color } : {}) }}>
       {src ? <img src={src} alt="" /> : <span style={fit ? undefined : { fontSize: Math.round(size * 0.62) }}>{emoji}</span>}
     </span>
   )
